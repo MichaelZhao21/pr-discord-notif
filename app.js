@@ -23,6 +23,11 @@ app.post('/', async function (req, res, next) {
         res.send({ status: 400, error: 'Invalid action' });
         return;
     }
+    else if (req.body.repository.full_name != config.repo) {
+        res.status(400);
+        res.send({ status: 400, error: 'Invalid repo' });
+        return;
+    }
     const pr = req.body.pull_request;
     const commits = await fetch(pr.commits_url, {
         method: 'GET',
