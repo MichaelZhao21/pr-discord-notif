@@ -7,9 +7,13 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-app.post('/', function(req, res, next) {
+app.post('/', function (req, res, next) {
     console.log(req.body);
     res.sendStatus(200);
+});
+
+app.listen(config.port || 3000, () => {
+    console.log(`Listening on port ${config.port || 3000}`);
 });
 
 client.on('ready', () => {
