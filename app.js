@@ -9,6 +9,14 @@ const btoa = require('btoa');
 
 app.use(bodyParser.json());
 
+app.get('/test', function (req, res, next) {
+    res.send({
+        hey: "UwU hiiiii hehe",
+        question: "How did you get here??? very interesting...",
+        cya: "Hope you have a great day! <333"
+    });
+});
+
 app.post('/', async function (req, res, next) {
     if (req.body.action != 'opened') {
         res.status(400);
