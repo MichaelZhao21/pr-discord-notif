@@ -1,0 +1,12 @@
+{
+  "name": "pr-discord-notif",
+  "version": "1.0.0",
+  "description": "Simple script that listens for a new pull request from a github action and sends a message to a text channel",
+  "main": "index.js",
+  "author": "Michael Zhao",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}
