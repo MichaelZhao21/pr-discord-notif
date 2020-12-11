@@ -35,7 +35,7 @@ app.post('/', async function (req, res, next) {
     }).then((data) => data.json());
     const embed = new Discord.MessageEmbed()
         .setColor('#00CD2D')
-        .setTitle(`**${pr.title}** *#${pr.number}*`)
+        .setTitle(`${pr.number}: ${pr.title}`)
         .setURL(pr.html_url)
         .setAuthor(pr.user.login, null, pr.user.html_url)
         .setThumbnail(pr.user.avatar_url)
