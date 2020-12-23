@@ -20,7 +20,7 @@ app.get('/test', function (req, res, next) {
 app.post('/', async function (req, res, next) {
     if (req.body.action != 'opened') {
         res.status(304);
-        res.send({ status: 200, info: 'Action is not "opened"; nothing changed' });
+        res.send({ status: 304, info: 'Action is not "opened"; nothing changed' });
         return;
     }
     else if (req.body.repository.full_name != config.repo) {
