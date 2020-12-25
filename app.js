@@ -34,7 +34,7 @@ app.post('/', async function (req, res, next) {
         res.status(304);
         res.send({ status: 304, info: 'Action is not "opened"; nothing changed' });
         return;
-    } else if (req.body.repository.full_name != config.repo) {
+    } else if (req.body.repository.full_name != process.env.REPO) {
         res.status(400);
         res.send({ status: 400, error: 'Invalid repo' });
         return;
@@ -42,7 +42,7 @@ app.post('/', async function (req, res, next) {
     const pr = req.body.pull_request;
     const commits = await fetch(pr.commits_url, {
         method: 'GET',
-        headers: { Authorization: 'Basic ' + btoa(`${config.ghUser}:${config.ghAuth}`) },
+        headers: { Authorization: 'Basic ' + btoa(`${process.env.GH_USER}:${process.env.GH_AUTH}`) },
     }).then((data) => data.json());
     const embed = new Discord.MessageEmbed()
         .setColor('#00CD2D')
@@ -56,11 +56,11 @@ app.post('/', async function (req, res, next) {
     commits.forEach((c) => {
         embed.addField(c.sha.substring(0, 7), c.commit.message);
     });
-    client.channels.cache.get(config.channelId).send(embed);
+    client.channels.cache.get(process.env.CHANNEL_ID).send(embed);
     res.sendStatus(200);
 });
 
-app.listen(config.port || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port ${config.port || 3000}`);
 });
 
@@ -68,4 +68,4 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.login(config.token);
+client.login(process.env.TOKEN);
