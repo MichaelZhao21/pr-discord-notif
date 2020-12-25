@@ -4,14 +4,15 @@ Listens to changes from a github repo and sends a message to a discord channel w
 
 ## Config
 
-Create a config.json file with the following information:
+Create a `.env` file (or add environmental variables) with the following information:
 
-```json
-{
-    "token": "[Discord bot token]",
-    "ghUser": "[Github Username]",
-    "ghAuth": "[Github personal access token]",
-    "repo": "[Repository name (ie. MichaelZhao21/michaelzhao)]"
+```.env
+TOKEN="[Discord bot token]"
+GH_USER="[Github Username]"
+GH_AUTH="[Github personal access token]"
+REPO="[Repository name (ie. MichaelZhao21/michaelzhao)]"
+CHANNEL_ID="[ID of text channel to send messages to]"
+PORT="[Port to use (optional)]
 }
 ```
 

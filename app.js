@@ -1,19 +1,31 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({ ws: { intents: Discord.Intents.ALL } });
-const config = require('./config.json');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const btoa = require('btoa');
+require('dotenv').config();
 
-app.use(bodyParser.json());
+// Detect for env vars
+if (
+    process.env.TOKEN == undefined ||
+    process.env.GH_USER == undefined ||
+    process.env.GH_AUTH == undefined ||
+    process.env.REPO == undefined ||
+    process.env.CHANNEL_ID == undefined ||
+    process.env.PORT == undefined
+) {
+    console.error("ERROR: Invalid environmental variables");
+    process.exit(1);
+}
+    app.use(bodyParser.json());
 
 app.get('/test', function (req, res, next) {
     res.send({
-        hey: "UwU hiiiii hehe",
-        question: "How did you get here??? very interesting...",
-        cya: "Hope you have a great day! <333"
+        hey: 'UwU hiiiii hehe',
+        question: 'How did you get here??? very interesting...',
+        cya: 'Hope you have a great day! <333',
     });
 });
 
@@ -22,8 +34,7 @@ app.post('/', async function (req, res, next) {
         res.status(304);
         res.send({ status: 304, info: 'Action is not "opened"; nothing changed' });
         return;
-    }
-    else if (req.body.repository.full_name != config.repo) {
+    } else if (req.body.repository.full_name != config.repo) {
         res.status(400);
         res.send({ status: 400, error: 'Invalid repo' });
         return;
@@ -42,7 +53,7 @@ app.post('/', async function (req, res, next) {
         .setDescription(
             `Merge ${pr.commits} commits into \`${pr.base.ref}\` from \`${pr.head.ref}\``
         );
-    commits.forEach(c => {
+    commits.forEach((c) => {
         embed.addField(c.sha.substring(0, 7), c.commit.message);
     });
     client.channels.cache.get(config.channelId).send(embed);
