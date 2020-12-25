@@ -61,7 +61,7 @@ app.post('/', async function (req, res, next) {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log(`Listening on port ${config.port || 3000}`);
+    console.log(`Listening on port ${process.env.PORT || 3000}`);
 });
 
 client.on('ready', () => {
