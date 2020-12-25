@@ -12,13 +12,12 @@ GH_USER="[Github Username]"
 GH_AUTH="[Github personal access token]"
 REPO="[Repository name (ie. MichaelZhao21/michaelzhao)]"
 CHANNEL_ID="[ID of text channel to send messages to]"
-PORT="[Port to use (optional)]
-}
+PORT="[Port to use (optional)]"
 ```
 
-Add the `pr-notif.yml` to your repo (same one as the config.json thing) in the `.github/workflows` folder (or go to the **Actions** tab and copy and paste it into the Action editor)
+Go to your repo `Settings` and click on `Webhooks`. Press `Add Webhook` to add a new webhook.
 
-** Make sure to change the `[address]` to the address of your web server **
+Under `Payload URL`, type in the address of where you are hosting this program. The POST request is listening on the root path. Change `Content type` to `application/json`. Under `Which events would you like to trigger this webhook?`, select `Let me select individual events` and **ONLY** check `Pull requests`. Then press save!
 
 ## Running
 
