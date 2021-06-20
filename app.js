@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
-const client = new Discord.Client({ ws: { intents: Discord.Intents.ALL } });
+const client = new Discord.Client();
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const btoa = require('btoa');
 require('dotenv').config();
@@ -16,10 +15,11 @@ if (
     process.env.CHANNEL_ID == undefined ||
     process.env.PORT == undefined
 ) {
-    console.error("ERROR: Invalid environmental variables");
+    console.error('ERROR: Invalid environmental variables');
     process.exit(1);
 }
-    app.use(bodyParser.json());
+
+app.use(express.json());
 
 app.get('/test', function (req, res, next) {
     res.send({
@@ -31,8 +31,8 @@ app.get('/test', function (req, res, next) {
 
 app.post('/', async function (req, res, next) {
     if (req.body.action != 'opened') {
-        res.status(304);
-        res.send({ status: 304, info: 'Action is not "opened"; nothing changed' });
+        res.status(200);
+        res.send({ status: 200, info: 'Action is not "opened"; nothing changed' });
         return;
     } else if (req.body.repository.full_name != process.env.REPO) {
         res.status(400);
@@ -42,7 +42,9 @@ app.post('/', async function (req, res, next) {
     const pr = req.body.pull_request;
     const commits = await fetch(pr.commits_url, {
         method: 'GET',
-        headers: { Authorization: 'Basic ' + btoa(`${process.env.GH_USER}:${process.env.GH_AUTH}`) },
+        headers: {
+            Authorization: 'Basic ' + btoa(`${process.env.GH_USER}:${process.env.GH_AUTH}`),
+        },
     }).then((data) => data.json());
     const embed = new Discord.MessageEmbed()
         .setColor('#00CD2D')
@@ -53,9 +55,16 @@ app.post('/', async function (req, res, next) {
         .setDescription(
             `Merge ${pr.commits} commits into \`${pr.base.ref}\` from \`${pr.head.ref}\``
         );
-    commits.forEach((c) => {
-        embed.addField(c.sha.substring(0, 7), c.commit.message);
-    });
+    try {
+        commits.forEach((c) => {
+            embed.addField(c.sha.substring(0, 7), c.commit.message);
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(400);
+        res.send({ status: 400, error: 'Could not get commits' });
+        return;
+    }
     client.channels.cache.get(process.env.CHANNEL_ID).send(embed);
     res.sendStatus(200);
 });
