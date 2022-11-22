@@ -2,7 +2,7 @@
 
 Listens to new pull requests from a Github repository and sends a message to a Discord text channel when a pull request is created. This is done through Github Webhooks, the Github API, and the Discordjs Bot Library.
 
-<p align="center"><img src="https://api.michaelzhao.xyz/static/github/pr-discord-notif.png"></p>
+![image](https://user-images.githubusercontent.com/37679458/203248030-3ac0398f-4b79-4e0f-b0e1-bbe3e7c7ca25.png)
 
 ## Config
 
